@@ -1,4 +1,5 @@
 import type { ComponentType } from 'react';
+import { PortfolioTable } from '@/app/(main)/boards/PortfolioTable';
 import { TextBlock } from '@/app/(main)/boards/TextBlock';
 import { BoardFunnel } from '@/app/(main)/websites/[websiteId]/(reports)/funnels/BoardFunnel';
 import { LinkMetricsBar } from '@/app/(main)/links/[linkId]/LinkMetricsBar';
@@ -351,6 +352,32 @@ const componentDefinitions: ComponentDefinition[] = [
         type: 'select',
         options: LIMIT_OPTIONS,
         defaultValue: '10',
+      },
+    ],
+  },
+
+  {
+    type: 'PortfolioTable',
+    name: 'Portfolio table',
+    description: 'Visitors for every website across several trailing windows',
+    category: 'tables',
+    group: 'Traffic',
+    icon: Sheet,
+    component: PortfolioTable,
+    requiresWebsite: false,
+    defaultProps: { ranges: '7,30,365', sortBy: '30', showTotal: true },
+    configFields: [
+      {
+        name: 'ranges',
+        label: 'Windows (days, comma separated)',
+        type: 'text',
+        defaultValue: '7,30,365',
+      },
+      {
+        name: 'sortBy',
+        label: 'Sort by window',
+        type: 'text',
+        defaultValue: '30',
       },
     ],
   },
