@@ -1,4 +1,5 @@
 import type { ComponentType } from 'react';
+import { PortfolioCharts } from '@/app/(main)/boards/PortfolioCharts';
 import { PortfolioTable } from '@/app/(main)/boards/PortfolioTable';
 import { TextBlock } from '@/app/(main)/boards/TextBlock';
 import { BoardFunnel } from '@/app/(main)/websites/[websiteId]/(reports)/funnels/BoardFunnel';
@@ -57,6 +58,8 @@ export interface ComponentDefinition {
   defaultProps?: Record<string, any>;
   configFields?: ConfigField[];
   requiresWebsite?: boolean;
+  /** Reads the shared date range even though it isn't tied to one entity. */
+  usesDateRange?: boolean;
 }
 
 export const CATEGORIES = [
@@ -382,6 +385,45 @@ const componentDefinitions: ComponentDefinition[] = [
     ],
   },
 
+  {
+    type: 'PortfolioCharts',
+    name: 'Portfolio charts',
+    description: 'A visitors chart for every website, following the selected date range',
+    category: 'visualization',
+    group: 'Traffic',
+    icon: ChartColumnBig,
+    component: PortfolioCharts,
+    requiresWebsite: false,
+    usesDateRange: true,
+    defaultProps: { columns: '2', limit: '12', chartHeight: '220' },
+    configFields: [
+      {
+        name: 'columns',
+        label: 'Columns',
+        type: 'select',
+        options: [
+          { label: '1', value: '1' },
+          { label: '2', value: '2' },
+          { label: '3', value: '3' },
+          { label: '4', value: '4' },
+        ],
+        defaultValue: '2',
+      },
+      {
+        name: 'limit',
+        label: 'Websites',
+        type: 'text',
+        defaultValue: '12',
+      },
+      {
+        name: 'chartHeight',
+        label: 'Chart height (px)',
+        type: 'text',
+        defaultValue: '220',
+      },
+    ],
+  },
+
   // Visualization
   {
     type: 'WorldMap',
@@ -441,6 +483,20 @@ export function getComponentDefinitions(): ComponentDefinition[] {
 
 export function getComponentDefinition(type: string): ComponentDefinition | undefined {
   return definitionMap.get(type);
+}
+
+/**
+ * True when any component on the board reads the shared date range without being
+ * bound to an entity — those boards still need the date picker rendered.
+ */
+export function hasDateRangeComponent(rows?: { columns?: { component?: { type?: string } }[] }[]) {
+  return (rows ?? []).some(row =>
+    (row.columns ?? []).some(column => {
+      const type = column.component?.type;
+
+      return !!type && !!getComponentDefinition(type)?.usesDateRange;
+    }),
+  );
 }
 
 export function getComponentsByCategory(category: string): ComponentDefinition[] {

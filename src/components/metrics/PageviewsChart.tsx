@@ -18,7 +18,14 @@ export interface PageviewsChartProps extends BarChartProps {
   unit: string;
 }
 
-export function PageviewsChart({ data, unit, minDate, maxDate, ...props }: PageviewsChartProps) {
+export function PageviewsChart({
+  data,
+  unit,
+  minDate,
+  maxDate,
+  height = '400px',
+  ...props
+}: PageviewsChartProps) {
   const { t, labels } = useMessages();
   const { theme } = useTheme();
   const { locale, dateLocale } = useLocale();
@@ -92,7 +99,7 @@ export function PageviewsChart({ data, unit, minDate, maxDate, ...props }: Pagev
       minDate={minDate}
       maxDate={maxDate}
       renderXLabel={renderXLabel}
-      height="400px"
+      height={height}
     />
   );
 }
