@@ -1,4 +1,5 @@
 import type { ComponentType } from 'react';
+import { EventPropertyTable } from '@/app/(main)/boards/EventPropertyTable';
 import { PortfolioCharts } from '@/app/(main)/boards/PortfolioCharts';
 import { PortfolioTable } from '@/app/(main)/boards/PortfolioTable';
 import { TextBlock } from '@/app/(main)/boards/TextBlock';
@@ -348,6 +349,36 @@ const componentDefinitions: ComponentDefinition[] = [
           link: PIXEL_LINK_METRIC_TYPES,
         },
         defaultValue: 'path',
+      },
+      {
+        name: 'limit',
+        label: 'Rows',
+        type: 'select',
+        options: LIMIT_OPTIONS,
+        defaultValue: '10',
+      },
+    ],
+  },
+
+  {
+    type: 'EventPropertyTable',
+    name: 'Event property table',
+    description: 'Breakdown of one event-data property, e.g. downloads by file',
+    category: 'tables',
+    group: 'Events',
+    icon: Sheet,
+    component: EventPropertyTable,
+    defaultProps: { eventName: '', propertyName: '', limit: '10' },
+    configFields: [
+      {
+        name: 'eventName',
+        label: 'Event name',
+        type: 'text',
+      },
+      {
+        name: 'propertyName',
+        label: 'Property',
+        type: 'text',
       },
       {
         name: 'limit',
