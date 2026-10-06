@@ -62,7 +62,8 @@ export function PortfolioTable({
   const { renderUrl } = useNavigation();
   const days = useMemo(() => parseRanges(ranges), [ranges]);
 
-  const websitesQuery = useUserWebsitesQuery({}, { pageSize: MAX_WEBSITES });
+  // includeTeams adds websites owned by teams the user owns or manages
+  const websitesQuery = useUserWebsitesQuery({}, { pageSize: MAX_WEBSITES, includeTeams: true });
   const websites = useMemo(
     () => (websitesQuery.data?.data ?? []).slice(0, MAX_WEBSITES),
     [websitesQuery.data],

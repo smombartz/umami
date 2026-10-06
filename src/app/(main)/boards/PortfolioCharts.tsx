@@ -52,7 +52,8 @@ export function PortfolioCharts({
   const count = parseCount(limit, DEFAULT_LIMIT, 1, MAX_WEBSITES);
   const height = parseCount(chartHeight, DEFAULT_CHART_HEIGHT, MIN_CHART_HEIGHT, MAX_CHART_HEIGHT);
 
-  const websitesQuery = useUserWebsitesQuery({}, { pageSize: MAX_WEBSITES });
+  // includeTeams adds websites owned by teams the user owns or manages
+  const websitesQuery = useUserWebsitesQuery({}, { pageSize: MAX_WEBSITES, includeTeams: true });
   const websites = useMemo(
     () => (websitesQuery.data?.data ?? []).slice(0, count),
     [websitesQuery.data, count],
